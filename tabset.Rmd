@@ -1,0 +1,34 @@
+---
+title: test
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+---
+
+Page
+=====
+
+
+
+Row {.tabset}
+----------------
+
+### Plot 1
+
+#### P1-1
+
+```{r}
+plot(iris)
+```
+
+#### P1-2
+
+```{r}
+plot(mtcars)
+```
+
+### Tab 2
+
+```{r}
+plot(iris)
+```

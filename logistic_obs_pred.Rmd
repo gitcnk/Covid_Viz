@@ -1,0 +1,58 @@
+### Observed and Predicted
+
+```{r echo=FALSE}
+renderPlot({
+
+  
+  p1 <- icu_percent_data %>%
+                    obs_plot()
+
+  
+
+  temp <- selected_data()
+  model_predictions <- predict(m1,
+                               newdata = temp,
+                               type = 'response')
+
+  temp$model_predictions <- model_predictions
+  
+  age <- seq(0,100)
+  diabetes <- c('Yes', 'No') 
+  hypertension <- c('Yes', 'No') 
+  obesity <- c('Yes', 'No') 
+  pneumonia <- c('Yes', 'No')
+
+
+  all_possible_cases <- data.frame(expand.grid(diabetes, hypertension,
+                                   obesity, pneumonia, age))
+  
+  names(all_possible_cases)[1] <- 'diabetes'
+  names(all_possible_cases)[2] <- 'hypertension'
+  names(all_possible_cases)[3] <- 'obesity'
+  names(all_possible_cases)[4] <- 'pneumonia'
+  names(all_possible_cases)[5] <- 'age'
+  
+  all_predictions <- predict(m1,
+                             newdata = all_possible_cases,
+                             type = 'response')
+  
+  all_possible_cases$model_predictions <- all_predictions
+  
+  all_possible_cases$bucket_id <- apply(all_possible_cases[, 1:4],
+                                        MARGIN = 1,
+                                        FUN = myf)
+  
+p2 <- all_possible_cases %>%
+        pred_plot() +
+        geom_tile(data = temp,
+                  aes(x = age ,
+                      y = bucket_id,
+                      fill = model_predictions),
+                  col = 'red',
+                  height = .7,
+                  linewidth = 1)
+
+grid.arrange(p1, p1, nrow = 1)
+
+})
+```

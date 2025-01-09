@@ -8,97 +8,35 @@ output:
 runtime: shiny
 ---
 
-
 ```{r child = 'setup.Rmd'}
 ```
 
 ```{r child = 'user_inputs.Rmd'}
 ```
 
-
 ```{r child = 'models_and_plots.Rmd'}
 ```
 
 # Logistic Regression
 
-Row {data-height= 50}
--------------------------------------
+```{r child = 'logistic_valueboxes.Rmd'}
 
-
-```{r echo = FALSE}
-
-selected_data <- reactive(icu_percent_data %>%
-                            filter(
-                             diabetes == input$diabetes,
-                             hypertension == input$hypertension,
-                             obesity == input$obesity,
-                             pneumonia == input$pneumonia,
-                             age == input$age)
-)
 ```
 
-### Obs {.value-box}
+Column {.tabset}
+--------------------
 
-```{r echo=FALSE}
-renderValueBox({
-  
-  temp <- selected_data()
-  valueBox(value = paste('Observed = ',
-                        round(temp$icu_percent, 4)),
-         color = "pink",
-         caption = ' ')
-})
-```
-
-### Sample {.value-box}
-```{r}
-renderValueBox({
-  
-  temp <- selected_data()
-  valueBox(value = paste('Sample Size = ',
-                        round(temp$sample_size, 4)),
-         color = "pink",
-         caption = ' ')
-})
-```
-
-### Pred {.value-box}
-```{r}
-renderValueBox({
-  
-  temp <- selected_data()
-  valueBox(value = paste('Predicted = ',
-                        round(temp$model_predictions, 4)),
-         color = "pink",
-         caption = ' ')
-})
-
+```{r child = 'logistic_obs_pred.Rmd'}
 ```
 
 
 
-Column
------------------
-
-### Observed
-
-```{r}
-icu_percent_data %>%
-                obs_plot()
+```{r child = 'residual_plots.Rmd'}
 ```
 
 
-### Precdicted Probability
-```{r echo=FALSE}
-
-icu_percent_data %>%
-                #filter(age < 18) %>%
-                pred_plot()
+# Classification Tree
 
 
-
-
-```
-
-
+# Random Forest
 

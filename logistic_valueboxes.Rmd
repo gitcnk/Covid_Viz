@@ -1,0 +1,53 @@
+## Row
+
+```{r echo = FALSE}
+
+selected_data <- reactive(icu_percent_data %>%
+                            filter(
+                             diabetes == input$diabetes,
+                             hypertension == input$hypertension,
+                             obesity == input$obesity,
+                             pneumonia == input$pneumonia,
+                             age == input$age)
+)
+```
+
+### Obs {.value-box}
+
+```{r echo=FALSE}
+renderValueBox({
+  
+  temp <- selected_data()
+  valueBox(value = paste('Observed = ',
+                        round(temp$icu_percent, 4)),
+         color = "pink",
+         caption = ' ')
+})
+```
+
+### Sample {.value-box}
+
+```{r}
+renderValueBox({
+  
+  temp <- selected_data()
+  valueBox(value = paste('Sample Size = ',
+                        round(temp$sample_size, 4)),
+         color = "pink",
+         caption = ' ')
+})
+```
+
+### Pred {.value-box}
+
+```{r}
+renderValueBox({
+  
+  temp <- selected_data()
+  valueBox(value = paste('Predicted = ',
+                        round(temp$model_predictions, 4)),
+         color = "pink",
+         caption = ' ')
+})
+
+```

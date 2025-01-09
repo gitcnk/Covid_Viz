@@ -1,0 +1,19 @@
+### Residuals (true - predicted)
+
+```{r echo=FALSE}
+#Error in Predictions
+err_plot <- icu_percent_data %>%
+              ggplot() +
+              aes(x = age ,
+                  y = bucket_id,
+                  col = sample_size,
+                  fill = icu_percent - model_predictions) +
+              geom_tile( height = 0.5, width = 3, linewidth = 1) +
+              scale_fill_viridis_c(name = '') +
+              scale_color_continuous(low = 'white', high = 'red') +
+              theme(legend.position = 'bottom',
+                    axis.text.y = element_blank()) +
+              labs(y = '')
+
+ggplotly(err_plot) %>% config(displayModeBar = FALSE)
+```
