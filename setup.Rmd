@@ -1,10 +1,10 @@
-
 ```{r setup, include=FALSE}
 library(flexdashboard)
 library(dplyr)
 library(ggplot2)
 library(plotly)
 library(shiny)
+#library(bslib)
 ```
 
 ```{r global, echo=FALSE}
@@ -49,4 +49,3 @@ icu_percent_data$bucket_id <- apply(icu_percent_data[, 1:4],
                                     FUN = myf)
      
 ```
-

@@ -1,11 +1,10 @@
 ---
-title: "Covid Mexico - ICU Admissions"
+title: "Covid - ICU Admissions"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
     vertical_layout: fill
-    social: [ "github" ]
-    github: https://github.com/gitcnk/Covid_viz.git
+    source_code: https://github.com/gitcnk/Covid_viz.git
 runtime: shiny
 ---
 
@@ -20,59 +19,62 @@ runtime: shiny
 ```{r child = 'models_and_plots.Rmd'}
 ```
 
+# Logistic Regression
 
-
-# Observed vs Predicted Probabilities
-
-Column 
+Row {data-height= 50}
 -------------------------------------
 
-### C1
+
+```{r echo = FALSE}
+
+selected_data <- reactive(icu_percent_data %>%
+                            filter(
+                             diabetes == input$diabetes,
+                             hypertension == input$hypertension,
+                             obesity == input$obesity,
+                             pneumonia == input$pneumonia,
+                             age == input$age)
+)
+```
+
+### Obs {.value-box}
 
 ```{r echo=FALSE}
 renderValueBox({
-selected_data <- icu_percent_data %>%
-                    filter(
-                     diabetes == input$diabetes,
-                     hypertension == input$hypertension,
-                     obesity == input$obesity,
-                     pneumonia == input$pneumonia,
-                     age == input$age)
-
-fluidRow(
-valueBox(value = paste('observed percent',
-                        round(selected_data$icu_percent, 4))),
-                       
-valueBox(value = paste('sample size = ' ,
-                       selected_data$sample_size),
-         color = "blue"),
-
-)
-
+  
+  temp <- selected_data()
+  valueBox(value = paste('Observed = ',
+                        round(temp$icu_percent, 4)),
+         color = "pink",
+         caption = ' ')
 })
-
 ```
 
-### c2
-
-```{r eval=FALSE, include=FALSE}
+### Sample {.value-box}
+```{r}
 renderValueBox({
-selected_data <- icu_percent_data %>%
-                    filter(
-                     diabetes == input$diabetes,
-                     hypertension == input$hypertension,
-                     obesity == input$obesity,
-                     pneumonia == input$pneumonia,
-                     age == input$age)
-
-valueBox(value = paste('predicted percent',
-                        round(selected_data$model_predictions, 4)),
-         color = "blue")
-
-
-
+  
+  temp <- selected_data()
+  valueBox(value = paste('Sample Size = ',
+                        round(temp$sample_size, 4)),
+         color = "pink",
+         caption = ' ')
 })
 ```
+
+### Pred {.value-box}
+```{r}
+renderValueBox({
+  
+  temp <- selected_data()
+  valueBox(value = paste('Predicted = ',
+                        round(temp$model_predictions, 4)),
+         color = "pink",
+         caption = ' ')
+})
+
+```
+
 
 
 Column
