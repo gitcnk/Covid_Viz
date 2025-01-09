@@ -1,0 +1,52 @@
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(shiny)
+```
+
+```{r global, echo=FALSE}
+# read data
+covid_clean <- read.csv('https://raw.githubusercontent.com/gitcnk/Data/refs/heads/master/Stat254/covid_clean.csv')
+
+
+# Data prep for the heatmap
+tiny_data  <- covid_clean %>%
+                filter(age < 90)
+
+tiny_data %>%
+  group_by(diabetes, hypertension,
+           obesity, pneumonia, age) %>%
+  summarise('sample_size' = n(),
+            'icu_count' = sum(ICU_status),
+            'icu_percent' = sum(ICU_status)/n()) -> icu_percent_data
+
+
+icu_percent_data %>%
+          na.omit() -> icu_percent_data
+
+
+
+bucket_code <- as.numeric(icu_percent_data$diabetes) - 1 +
+               as.numeric(icu_percent_data$hypertension) - 1 +
+               as.numeric(icu_percent_data$obesity) - 1 +
+               as.numeric(icu_percent_data$pneumonia) - 1
+
+icu_percent_data$bucket_code <- bucket_code
+
+
+myf <- function(x)
+{
+  out <- (as.character(x) )
+  return(toString(out))
+}
+
+
+icu_percent_data$bucket_id <- apply(icu_percent_data[, 1:4],
+                                    MARGIN = 1,
+                                    FUN = myf)
+     
+```
+

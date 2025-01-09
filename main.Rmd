@@ -1,0 +1,102 @@
+---
+title: "Covid Mexico - ICU Admissions"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    social: [ "github" ]
+    github: https://github.com/gitcnk/Covid_viz.git
+runtime: shiny
+---
+
+
+```{r child = 'setup.Rmd'}
+```
+
+```{r child = 'user_inputs.Rmd'}
+```
+
+
+```{r child = 'models_and_plots.Rmd'}
+```
+
+
+
+# Observed vs Predicted Probabilities
+
+Column 
+-------------------------------------
+
+### C1
+
+```{r echo=FALSE}
+renderValueBox({
+selected_data <- icu_percent_data %>%
+                    filter(
+                     diabetes == input$diabetes,
+                     hypertension == input$hypertension,
+                     obesity == input$obesity,
+                     pneumonia == input$pneumonia,
+                     age == input$age)
+
+fluidRow(
+valueBox(value = paste('observed percent',
+                        round(selected_data$icu_percent, 4))),
+                       
+valueBox(value = paste('sample size = ' ,
+                       selected_data$sample_size),
+         color = "blue"),
+
+)
+
+})
+
+```
+
+### c2
+
+```{r eval=FALSE, include=FALSE}
+renderValueBox({
+selected_data <- icu_percent_data %>%
+                    filter(
+                     diabetes == input$diabetes,
+                     hypertension == input$hypertension,
+                     obesity == input$obesity,
+                     pneumonia == input$pneumonia,
+                     age == input$age)
+
+valueBox(value = paste('predicted percent',
+                        round(selected_data$model_predictions, 4)),
+         color = "blue")
+
+
+
+})
+```
+
+
+Column
+-----------------
+
+### Observed
+
+```{r}
+icu_percent_data %>%
+                obs_plot()
+```
+
+
+### Precdicted Probability
+```{r echo=FALSE}
+
+icu_percent_data %>%
+                #filter(age < 18) %>%
+                pred_plot()
+
+
+
+
+```
+
+
+

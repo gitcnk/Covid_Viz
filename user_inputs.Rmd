@@ -1,0 +1,41 @@
+# My Sidebar {.sidebar}
+```{r}
+
+radioButtons(
+  inputId = 'diabetes',
+  label = 'Diabetes Status',
+  choices = c('Yes', 'No'),
+  selected = 'No'
+)
+
+
+radioButtons(
+  inputId = 'hypertension',
+  label = 'Hypertension Status',
+  choices = c('Yes', 'No'),
+  selected = 'No'
+)
+
+
+radioButtons(
+  inputId = 'obesity',
+  label = 'Obesity Status',
+  choices = c('Yes', 'No'),
+  selected = 'No'
+)
+
+radioButtons(
+  inputId = 'pneumonia',
+  label = 'Pneumonia Status',
+  choices = c('Yes', 'No'),   selected = 'No'
+)
+
+sliderInput(
+  inputId = 'age',
+  label = 'Age of the Patient',
+  min = 0,
+  max = 100,
+  step = 10,
+  value = 20 # default value
+)
+```

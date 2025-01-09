@@ -1,0 +1,62 @@
+```{r echo=FALSE}
+
+m1 <- glm(as.factor(admitted_to_icu) ~ diabetes + 
+                                       hypertension +
+                                       obesity + 
+                                       pneumonia + age,
+          data = covid_clean,
+          family = 'binomial')
+
+model_predictions <- predict(m1,
+                             newdata = icu_percent_data,
+                             type = 'response')
+
+icu_percent_data$model_predictions <- model_predictions
+
+```
+
+
+```{r}
+# set up base plots
+
+    obs_plot <- function(plotdata)
+                {
+                ggplot(data = plotdata) +
+                aes(x = age ,
+                    y = bucket_id,
+                    fill = icu_percent,
+                    col = sample_size) +
+                geom_tile( height = .6,
+                           width = 1,
+                           linewidth = .8) +
+                scale_fill_viridis_c() +
+                #scale_fill_continuous(low = 'green',
+                                      #high = 'purple') +
+                scale_color_continuous(low = 'white',
+                                       high = 'red') +
+                theme(legend.position = 'none') + 
+                labs(y = '')}
+
+    
+    pred_plot <- function(plotdata)
+                {
+                  ggplot(data = plotdata) +
+                  aes(x = age ,
+                    y = bucket_id,
+                    fill = model_predictions) +
+                  geom_tile( height = .6,
+                             width = 1,
+                             linewidth = .8) +
+                  scale_fill_viridis_c() +
+                  #scale_fill_continuous(low = 'green',
+                   #                     high = 'purple') +
+                  #scale_color_continuous(low = 'white',
+                  #                       high = 'red') +
+                  theme(legend.position = 'none',
+                        axis.text.y = element_blank()) +
+                  labs(y = '')
+                }
+    
+```
+
+
