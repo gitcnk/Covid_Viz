@@ -28,5 +28,5 @@ Ref: <https://happygitwithr.com/>
 
 ### A Point about Tabsets
 
--   In `flexdashboard` within a single tab the plots are arranged vertically (annoying)
--   Use `gridExtra` for more flexibility
+-   In `flexdashboard` within a single tab the plots are arranged vertically (annoying). See <https://github.com/rstudio/flexdashboard/issues/265>
+-   Use `gridExtra` or `patchwork` for more flexibility.
